@@ -2927,6 +2927,10 @@ static void build_ins(BuildCtx *ctx, BCOp op, int defop)
     |   ins_next2
     |  checktp CARG2, LJ_TISNUM
     |  bhi ->vmeta_unm
+    |  // handle negative zero in vmeta_unm
+    |  cmp CARG1, #0
+    |  beq ->vmeta_unm
+    |  checktp CARG2, LJ_TISNUM
     |  eorne CARG2, CARG2, #0x80000000
     |  bne >5
     |  rsbseq CARG1, CARG1, #0

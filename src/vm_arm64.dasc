@@ -2476,7 +2476,11 @@ static void build_ins(BuildCtx *ctx, BCOp op, int defop)
     |  asr ITYPE, TMP0, #47
     |  cmn ITYPE, #-LJ_TISNUM
     |  bhi ->vmeta_unm
+    |  // handle negative zero in vmeta_unm
+    |  cmp TMP0, TISNUM
+    |  beq ->vmeta_unm
     |  eor TMP0, TMP0, #U64x(80000000,00000000)
+    |  cmn ITYPE, #-LJ_TISNUM
     |  bne >5
     |  negs TMP0w, TMP0w
     |   movz CARG3, #0x41e0, lsl #48	// 2^31.
